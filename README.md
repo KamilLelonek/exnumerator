@@ -1,13 +1,13 @@
 # exnumerable
 
-Enum type in Elixir known from [Java](https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html) or [C#](https://msdn.microsoft.com/en-us/library/vstudio/cc138362(v=vs.110).aspx).
+Enum type in Elixir known from [Java](https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html) or [C#](https://msdn.microsoft.com/en-us/library/vstudio/cc138362).
 
 Either in Java or in C# there is `enum` type available. It is a special data type that enables for a variable to be a set of predefined constants. The variable must be equal to one of the values that have been predefined for it. Common examples include compass directions (values of `NORTH`, `SOUTH`, `EAST`, and `WEST`) and the days of the week. You should use enum types any time you need to represent a fixed set of constants. That includes natural enum types such as the planets in our solar system and data sets where you know all possible values at compile time—for example, the choices on a menu, command line flags, and so on.
 
 See more:
 
-- https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html
-- https://msdn.microsoft.com/en-us/library/vstudio/cc138362(v=vs.110
+- <https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html>
+- <https://msdn.microsoft.com/en-us/library/vstudio/cc138362>
 
 ## Rationale
 
@@ -37,6 +37,61 @@ end
 def application do
   [applications: [:exnumerable]]
 end
+```
+
+## Usage
+
+This project is helpful if you have both [`ecto`](https://github.com/elixir-lang/ecto) and [`postgrex`](https://github.com/ericmj/postgrex) in your project. It makes no sense to use it without a database.
+
+### Custom type
+
+```elixir
+defmodule MyProject.Message.Status do
+  use Exnumerable,
+    values: [:sent, :read, :received, :delivered]
+end
+```
+
+### Database migration:
+
+```elixir
+defmodule MyProject.Repo.Migrations.CreateMessage do
+  use Ecto.Migration
+
+  def change do
+    create table(:messages) do
+      add :status, :string
+    end
+  end
+end
+```
+
+### Database model
+
+```elixir
+defmodule MyProject.Message do
+  use MyProject.Web, :model
+
+  schema "messages" do
+    field :status, MyProject.Message.Status
+  end
+end
+```
+
+### Operations
+
+You can see all available values:
+
+```elixir
+iex(1)> MyProject.Message.Status.values
+[:sent, :read, :received, :delivered]
+```
+
+When you try to insert a record with some value that is not defined, you will get the following error:
+
+```elixir
+iex(1)> %MyProject.Message{status: "invalid"} |> MyProject.Repo.insert!
+** (Ecto.ChangeError) value `"invalid"` for `MyProject.Message.status` in `insert` does not match type MyProject.Message.status
 ```
 
 ## Testing
