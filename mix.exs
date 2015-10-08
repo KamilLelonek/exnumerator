@@ -36,10 +36,10 @@ defmodule Exnumerable.Mixfile do
 
   defp package do
     [
-      files:        ["lib", "config", "mix.exs", "README.md"],
-      contributors: ["Kamil Lelonek"],
-      licenses:     ["MIT"],
-      links:        %{ "GitHub" => "https://github.com/KamilLelonek/exnumerable" }
+      files:       ["lib", "config", "mix.exs", "README.md"],
+      maintainers: ["Kamil Lelonek"],
+      licenses:    ["MIT"],
+      links:       %{ "GitHub" => "https://github.com/KamilLelonek/exnumerable" }
     ]
   end
 end
