@@ -38,3 +38,9 @@ def application do
   [applications: [:exnumerable]]
 end
 ```
+
+## Testing
+
+To test this project you need to run:
+
+    mix test
