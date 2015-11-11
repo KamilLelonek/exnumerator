@@ -93,7 +93,8 @@ When you try to insert a record with some value that is not defined, you will ge
 
 ```elixir
 iex(1)> %MyProject.Message{status: "invalid"} |> MyProject.Repo.insert!
-** (Ecto.ChangeError) value `"invalid"` for `MyProject.Message.status` in `insert` does not match type MyProject.Message.status
+** (Ecto.ChangeError) value `"invalid"` for `MyProject.Message.status` 
+   in `insert` does not match type MyProject.Message.status
 ```
 
 ## Testing
