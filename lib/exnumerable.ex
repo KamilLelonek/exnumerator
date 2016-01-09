@@ -1,4 +1,4 @@
-defmodule Exnumerable do
+defmodule Exnumterator do
   defmacro __using__(opts) do
     quote location: :keep, bind_quoted: [values: opts[:values]] do
       @behaviour Ecto.Type

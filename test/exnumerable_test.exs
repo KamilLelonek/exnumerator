@@ -1,8 +1,8 @@
-defmodule ExnumerableTest do
+defmodule ExnumteratorTest do
   use ExUnit.Case
 
   defmodule Message do
-    use Exnumerable,
+    use Exnumterator,
       values: [:sent, :read, :received, :delivered]
   end
 

@@ -1,9 +1,9 @@
-defmodule Exnumerable.Mixfile do
+defmodule Exnumterator.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app:             :exnumerable,
+      app:             :exnumterator,
       version:         "0.0.1",
       elixir:          "~> 1.1",
       build_embedded:  Mix.env == :prod,
@@ -39,7 +39,7 @@ defmodule Exnumerable.Mixfile do
       files:       ["lib", "config", "mix.exs", "README.md"],
       maintainers: ["Kamil Lelonek"],
       licenses:    ["MIT"],
-      links:       %{ "GitHub" => "https://github.com/KamilLelonek/exnumerable" }
+      links:       %{ "GitHub" => "https://github.com/KamilLelonek/exnumterator" }
     ]
   end
 end
