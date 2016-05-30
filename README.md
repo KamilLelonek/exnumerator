@@ -82,7 +82,7 @@ end
 
 ### Operations
 
-You can see all available values:
+**You can see all available values:**
 
 ```elixir
 iex(1)> MyProject.Message.Status.values
@@ -95,6 +95,13 @@ When you try to insert a record with some value that is not defined, you will ge
 iex(1)> %MyProject.Message{status: "invalid"} |> MyProject.Repo.insert!
 ** (Ecto.ChangeError) value `"invalid"` for `MyProject.Message.status` 
    in `insert` does not match type MyProject.Message.status
+```
+
+**You can also pick a random value from the predefined set:**
+
+```elixir
+iex(1)> MyProject.Message.Status.sample
+:delivered
 ```
 
 ## Testing
