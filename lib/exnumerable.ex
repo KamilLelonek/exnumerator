@@ -5,7 +5,7 @@ defmodule Exnumerator do
 
       def type,   do: :string
       def values, do: unquote(values)
-      def sample, do: values |> Enum.random
+      def sample, do: unquote(values) |> Enum.random
 
       for value <- values, atom = value, string = Atom.to_string(value) do
         def cast(unquote(string)), do: {:ok, unquote(atom)}
