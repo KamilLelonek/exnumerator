@@ -10,13 +10,13 @@ defmodule Exnumerator.Mixfile do
       start_permanent: Mix.env == :prod,
       description:     description(),
       package:         package(),
-      deps:            deps()
+      deps:            deps(Mix.env)
     ]
   end
 
   def application do
     [
-      applications: apps()
+      applications: apps(),
     ]
   end
 
@@ -24,7 +24,13 @@ defmodule Exnumerator.Mixfile do
     []
   end
 
-  defp deps do
+  defp deps(:dev) do
+    [
+      {:ex_doc, ">= 0.0.0"},
+    ]
+  end
+
+  defp deps(_) do
     []
   end
 
@@ -39,7 +45,7 @@ defmodule Exnumerator.Mixfile do
       files:       ["lib", "config", "mix.exs", "README.md"],
       maintainers: ["Kamil Lelonek"],
       licenses:    ["MIT"],
-      links:       %{ "GitHub" => "https://github.com/KamilLelonek/exnumerator" }
+      links:       %{ "GitHub" => "https://github.com/KamilLelonek/exnumerator" },
     ]
   end
 end
