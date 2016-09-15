@@ -29,7 +29,7 @@ The package can be installed as:
 
 ```elixir
 def deps do
-  [{:exnumerator, "~> 1.0.0"}]
+  [{:exnumerator, "~> 1.2.1"}]
 end
 ```
 
