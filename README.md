@@ -37,7 +37,7 @@ end
 
 ```elixir
 def application do
-  [applications: [:exnumerator]]
+  [applications: [..., :exnumerator]]
 end
 ```
 
@@ -47,10 +47,16 @@ This project is helpful if you have both [`ecto`](https://github.com/elixir-lang
 
 ### Custom type
 
+Append defining block before the schema module.
+
 ```elixir
-defmodule MyProject.Message.Status do
+defmodule MyProject.Messages.Message.Status do
   use Exnumerator,
     values: [:sent, :read, :received, :delivered]
+end
+
+defmodule MyProject.Messages.Message do
+  ...
 end
 ```
 
@@ -68,14 +74,16 @@ defmodule MyProject.Repo.Migrations.CreateMessage do
 end
 ```
 
-### Database model
+### Schema module:
 
 ```elixir
-defmodule MyProject.Message do
-  use MyProject.Web, :model
+defmodule MyProject.Messages.Message do
+  use Ecto.Schema
+  import Ecto.Changeset
+  alias MyProject.Messages.Message
 
   schema "messages" do
-    field :status, MyProject.Message.Status
+    field :status, Message.Status
   end
 end
 ```
