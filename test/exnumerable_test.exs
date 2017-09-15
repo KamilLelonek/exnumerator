@@ -18,14 +18,14 @@ defmodule ExnumeratorTest do
     assert Message.cast("sent")      == {:ok, "sent"}
     assert Message.load("received")  == {:ok, "received"}
     assert Message.dump("delivered") == {:ok, "delivered"}
-    assert Message.cast(:sent)       == :error
-    assert Message.load(:received)   == :error
-    assert Message.dump(:delivered)  == :error
   end
 
   test "should not cast unknown argument" do
     assert Message.cast("invalid") == :error
     assert Message.load("invalid") == :error
     assert Message.dump("invalid") == :error
+    assert Message.cast(:invalid)  == :error
+    assert Message.load(:invalid)  == :error
+    assert Message.dump(:invalid)  == :error
   end
 end
