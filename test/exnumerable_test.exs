@@ -20,6 +20,12 @@ defmodule ExnumeratorTest do
     assert Message.dump("delivered") == {:ok, "delivered"}
   end
 
+  test "should not accept argument except string" do
+    assert Message.cast(:sent)     == :error
+    assert Message.load(:sent)     == :error
+    assert Message.dump(:sent)     == :error
+  end
+
   test "should not cast unknown argument" do
     assert Message.cast("invalid") == :error
     assert Message.load("invalid") == :error
