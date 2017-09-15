@@ -54,7 +54,7 @@ defmodule MyProject.Message.Status do
 end
 ```
 
-### Database migration:
+### Database migration
 
 ```elixir
 defmodule MyProject.Repo.Migrations.CreateMessage do
