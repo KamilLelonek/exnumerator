@@ -50,7 +50,7 @@ This project is helpful if you have both [`ecto`](https://github.com/elixir-lang
 ```elixir
 defmodule MyProject.Message.Status do
   use Exnumerator,
-    values: [:sent, :read, :received, :delivered]
+    values: ["sent", "read", "received", "delivered"]
 end
 ```
 
@@ -86,7 +86,7 @@ end
 
 ```elixir
 iex(1)> MyProject.Message.Status.values
-[:sent, :read, :received, :delivered]
+["sent", "read", "received", "delivered"]
 ```
 
 When you try to insert a record with some value that is not defined, you will get the following error:
@@ -101,7 +101,7 @@ iex(1)> %MyProject.Message{status: "invalid"} |> MyProject.Repo.insert!
 
 ```elixir
 iex(1)> MyProject.Message.Status.sample
-:delivered
+"delivered"
 ```
 
 ## Testing
