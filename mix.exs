@@ -4,7 +4,7 @@ defmodule Exnumerator.Mixfile do
   def project do
     [
       app:             :exnumerator,
-      version:         "1.2.2",
+      version:         "1.3.0",
       elixir:          "~> 1.5",
       build_embedded:  Mix.env == :prod,
       start_permanent: Mix.env == :prod,
