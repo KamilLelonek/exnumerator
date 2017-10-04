@@ -7,12 +7,10 @@ defmodule Exnumerator do
       def values, do: unquote(values)
       def sample, do: unquote(values) |> Enum.random
 
-      for value <- values, atom = value, string = Atom.to_string(value) do
-        def cast(unquote(string)), do: {:ok, unquote(atom)}
-        def cast(unquote(atom)),   do: {:ok, unquote(atom)}
-        def load(unquote(string)), do: {:ok, unquote(atom)}
-        def dump(unquote(string)), do: {:ok, unquote(string)}
-        def dump(unquote(atom)),   do: {:ok, unquote(string)}
+      for value <- values do
+        def cast(unquote(value)), do: {:ok, unquote(value)}
+        def load(unquote(value)), do: {:ok, unquote(value)}
+        def dump(unquote(value)), do: {:ok, unquote(value)}
       end
 
       def cast(_), do: :error
