@@ -25,12 +25,19 @@ Here `exnumerator` steps in to give you a handy way to define enumerable types t
 
 The package can be installed as:
 
+  1. Add exnumerator to your list of dependencies in `mix.exs`:
+
 ```elixir
 def deps do
-  [
-    {:exnumerator, "~> 1.4"},
-    # ...
-  ]
+  [{:exnumerator, "~> 1.4.0"}]
+end
+```
+
+  2. Ensure exnumerator is started before your application:
+
+```elixir
+def application do
+  [applications: [:exnumerator]]
 end
 ```
 
@@ -41,13 +48,12 @@ This project is helpful if you have both [`ecto`](https://github.com/elixir-lang
 ### Custom type
 
 ```elixir
-# VALUES as STRINGS
 defmodule MyProject.Message.StatusAsString do
   use Exnumerator,
     values: ["sent", "read", "received", "delivered"]
 end
 
-# VALUES as ATOMS
+# Its posible to use values as atom's
 defmodule MyProject.Message.StatusAsAtom do
   use Exnumerator,
     values: [:sent, :read, :received, :delivered]
@@ -85,32 +91,31 @@ end
 **You can see all available values:**
 
 ```elixir
-iex(1)> MyProject.Message.StatusAsString.values()
+iex(1)> MyProject.Message.StatusAsString.values
 ["sent", "read", "received", "delivered"]
 ```
 
 ```elixir
-iex(1)> MyProject.Message.StatusAsAtom.values()
+iex(1)> MyProject.Message.StatusAsAtom.values
 [:sent, :read, :received, :delivered]
 ```
 
 When you try to insert a record with some value that is not defined, you will get the following error:
 
 ```elixir
-# Status should be a String or an Atom, depending of what you use.
-
-iex(1)> %MyProject.Message{status: "invalid"} |> MyProject.Repo.insert!()
-** (Ecto.ChangeError) value `"invalid"` for `MyProject.Message.status`
+#status should be String or Atom, depends of what you use
+iex(1)> %MyProject.Message{status: "invalid"} |> MyProject.Repo.insert!
+** (Ecto.ChangeError) value `"invalid"` for `MyProject.Message.status` 
    in `insert` does not match type MyProject.Message.status
 ```
 
 **You can also pick a random value from the predefined set:**
 
 ```elixir
-iex(1)> MyProject.Message.StatusAsString.sample()
+iex(1)> MyProject.Message.StatusAsString.sample
 "delivered"
 
-iex(1)> MyProject.Message.StatusAsAtom.sample()
+iex(1)> MyProject.Message.StatusAsAtom.sample
 :delivered
 ```
 

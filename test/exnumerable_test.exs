@@ -38,27 +38,30 @@ defmodule ExnumeratorTest do
   end
 
   test "atom should load as atom" do
-    assert MessageAsAtom.load(:received) == {:ok, :received}
+    assert MessageAsAtom.load(:received)  == {:ok, :received}
   end
 
   test "should not accept argument except string" do
-    assert MessageAsString.cast(:sent) == :error
-    assert MessageAsString.load(:sent) == :error
-    assert MessageAsString.dump(:sent) == :error
+    assert MessageAsString.cast(:sent)     == :error
+    assert MessageAsString.load(:sent)     == :error
+    assert MessageAsString.dump(:sent)     == :error
   end
 
-  test "should not accept argument except atom(MessageAsAtoms)" do
-    assert MessageAsAtom.cast("sent")      == :error
+  test "should not accept load argument except atom(MessageAsAtoms)" do
     assert MessageAsAtom.load("received")  == :error
-    assert MessageAsAtom.dump("delivered") == :error
+  end
+
+  test "should accept string for values in atom in cast and dump" do
+    assert MessageAsAtom.cast("sent")      == {:ok, "sent"}
+    assert MessageAsAtom.dump("delivered") == {:ok, "delivered"}
   end
 
   test "should not cast unknown argument" do
     assert MessageAsString.cast("invalid") == :error
     assert MessageAsString.load("invalid") == :error
     assert MessageAsString.dump("invalid") == :error
-    assert MessageAsAtom.cast(:invalid)    == :error
-    assert MessageAsAtom.load(:invalid)    == :error
-    assert MessageAsAtom.dump(:invalid)    == :error
+    assert MessageAsAtom.cast(:invalid)  == :error
+    assert MessageAsAtom.load(:invalid)  == :error
+    assert MessageAsAtom.dump(:invalid)  == :error
   end
 end
