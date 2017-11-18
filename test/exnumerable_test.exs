@@ -47,10 +47,13 @@ defmodule ExnumeratorTest do
     assert MessageAsString.dump(:sent)     == :error
   end
 
-  test "should not accept argument except atom(MessageAsAtoms)" do
-    assert MessageAsAtom.cast("sent")      == :error
+  test "should not accept load argument except atom(MessageAsAtoms)" do
     assert MessageAsAtom.load("received")  == :error
-    assert MessageAsAtom.dump("delivered") == :error
+  end
+
+  test "should accept string for values in atom in cast and dump" do
+    assert MessageAsAtom.cast("sent")      == {:ok, "sent"}
+    assert MessageAsAtom.dump("delivered") == {:ok, "delivered"}
   end
 
   test "should not cast unknown argument" do
