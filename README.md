@@ -53,7 +53,7 @@ defmodule MyProject.Message.StatusAsString do
     values: ["sent", "read", "received", "delivered"]
 end
 
-# Its posible to use values as atoms
+# Its posible to use values as atom's
 defmodule MyProject.Message.StatusAsAtom do
   use Exnumerator,
     values: [:sent, :read, :received, :delivered]
