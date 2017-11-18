@@ -1,37 +1,64 @@
 defmodule ExnumeratorTest do
   use ExUnit.Case
 
-  @values ["sent", "read", "received", "delivered"]
+  @values_strings ["sent", "read", "received", "delivered"]
+  @values_atoms   [:sent, :read, :received, :delivered]
 
-  defmodule Message do
+  defmodule MessageAsString do
     use Exnumerator,
       values: ["sent", "read", "received", "delivered"]
   end
 
+  defmodule MessageAsAtom do
+    use Exnumerator,
+      values: [:sent, :read, :received, :delivered]
+  end
+
   test "should store given values",
-    do: assert Message.values == @values
+    do: assert MessageAsString.values == @values_strings
 
   test "should return a random value",
-    do: assert Message.sample in @values
+    do: assert MessageAsString.sample in @values_strings
+
+  test "should store given values(MessageAsAtoms)",
+    do: assert MessageAsAtom.values == @values_atoms
+
+  test "should return a random value(MessageAsAtoms)",
+    do: assert MessageAsAtom.sample in @values_atoms
 
   test "should argument given types" do
-    assert Message.cast("sent")      == {:ok, "sent"}
-    assert Message.load("received")  == {:ok, "received"}
-    assert Message.dump("delivered") == {:ok, "delivered"}
+    assert MessageAsString.cast("sent")      == {:ok, "sent"}
+    assert MessageAsString.load("received")  == {:ok, "received"}
+    assert MessageAsString.dump("delivered") == {:ok, "delivered"}
+  end
+
+  test "should argument given types(MessageAsAtoms)" do
+    assert MessageAsAtom.cast(:sent)      == {:ok, "sent"}
+    assert MessageAsAtom.dump(:delivered) == {:ok, "delivered"}
+  end
+
+  test "atom should load as atom" do
+    assert MessageAsAtom.load(:received)  == {:ok, :received}
   end
 
   test "should not accept argument except string" do
-    assert Message.cast(:sent)     == :error
-    assert Message.load(:sent)     == :error
-    assert Message.dump(:sent)     == :error
+    assert MessageAsString.cast(:sent)     == :error
+    assert MessageAsString.load(:sent)     == :error
+    assert MessageAsString.dump(:sent)     == :error
+  end
+
+  test "should not accept argument except atom(MessageAsAtoms)" do
+    assert MessageAsAtom.cast("sent")      == :error
+    assert MessageAsAtom.load("received")  == :error
+    assert MessageAsAtom.dump("delivered") == :error
   end
 
   test "should not cast unknown argument" do
-    assert Message.cast("invalid") == :error
-    assert Message.load("invalid") == :error
-    assert Message.dump("invalid") == :error
-    assert Message.cast(:invalid)  == :error
-    assert Message.load(:invalid)  == :error
-    assert Message.dump(:invalid)  == :error
+    assert MessageAsString.cast("invalid") == :error
+    assert MessageAsString.load("invalid") == :error
+    assert MessageAsString.dump("invalid") == :error
+    assert MessageAsAtom.cast(:invalid)  == :error
+    assert MessageAsAtom.load(:invalid)  == :error
+    assert MessageAsAtom.dump(:invalid)  == :error
   end
 end

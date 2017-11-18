@@ -29,7 +29,7 @@ The package can be installed as:
 
 ```elixir
 def deps do
-  [{:exnumerator, "~> 1.3.0"}]
+  [{:exnumerator, "~> 1.4.0"}]
 end
 ```
 
@@ -48,9 +48,15 @@ This project is helpful if you have both [`ecto`](https://github.com/elixir-lang
 ### Custom type
 
 ```elixir
-defmodule MyProject.Message.Status do
+defmodule MyProject.Message.StatusAsString do
   use Exnumerator,
     values: ["sent", "read", "received", "delivered"]
+end
+
+# Its posible to use values as atoms
+defmodule MyProject.Message.StatusAsAtom do
+  use Exnumerator,
+    values: [:sent, :read, :received, :delivered]
 end
 ```
 
@@ -75,7 +81,7 @@ defmodule MyProject.Message do
   use MyProject.Web, :model
 
   schema "messages" do
-    field :status, MyProject.Message.Status
+    field :status, MyProject.Message.StatusAsString
   end
 end
 ```
@@ -85,13 +91,19 @@ end
 **You can see all available values:**
 
 ```elixir
-iex(1)> MyProject.Message.Status.values
+iex(1)> MyProject.Message.StatusAsString.values
 ["sent", "read", "received", "delivered"]
+```
+
+```elixir
+iex(1)> MyProject.Message.StatusAsAtom.values
+[:sent, :read, :received, :delivered]
 ```
 
 When you try to insert a record with some value that is not defined, you will get the following error:
 
 ```elixir
+#status should be String or Atom, depends of what you use
 iex(1)> %MyProject.Message{status: "invalid"} |> MyProject.Repo.insert!
 ** (Ecto.ChangeError) value `"invalid"` for `MyProject.Message.status` 
    in `insert` does not match type MyProject.Message.status
@@ -100,8 +112,11 @@ iex(1)> %MyProject.Message{status: "invalid"} |> MyProject.Repo.insert!
 **You can also pick a random value from the predefined set:**
 
 ```elixir
-iex(1)> MyProject.Message.Status.sample
+iex(1)> MyProject.Message.StatusAsString.sample
 "delivered"
+
+iex(1)> MyProject.Message.StatusAsAtom.sample
+:delivered
 ```
 
 ## Testing
