@@ -28,7 +28,7 @@ The package can be installed as:
 ```elixir
 def deps do
   [
-    {:exnumerator, "~> 1.5"},
+    {:exnumerator, "~> 1.6"},
     # ...
   ]
 end
