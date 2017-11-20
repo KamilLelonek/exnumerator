@@ -44,13 +44,13 @@ defmodule ExnumeratorTest do
   end
 
   test "should load string and convert to atom when is MessageAsAtom" do
-    refute MessageAsAtom.load("received")  == {:ok, "received"}
-    assert MessageAsAtom.load("received")  == {:ok, :received}
+    refute MessageAsAtom.load("received") == {:ok, "received"}
+    assert MessageAsAtom.load("received") == {:ok, :received}
   end
 
   test "should load string and not convert to atom when is MessageAsString" do
-    refute MessageAsString.load("received")  == {:ok, :received}
-    assert MessageAsString.load("received")  == {:ok, "received"}
+    refute MessageAsString.load("received") == {:ok, :received}
+    assert MessageAsString.load("received") == {:ok, "received"}
   end
 
   test "should accept string for values in atom for cast and dump" do
