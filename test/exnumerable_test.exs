@@ -37,18 +37,20 @@ defmodule ExnumeratorTest do
     assert MessageAsAtom.dump(:delivered) == {:ok, "delivered"}
   end
 
-  test "atom should load as atom" do
-    assert MessageAsAtom.load(:received) == {:ok, :received}
-  end
-
   test "should not accept argument except string" do
     assert MessageAsString.cast(:sent) == :error
     assert MessageAsString.load(:sent) == :error
     assert MessageAsString.dump(:sent) == :error
   end
 
-  test "should not accept argument except atom(MessageAsAtoms) in load" do
-    assert MessageAsAtom.load("received")  == :error
+  test "should load string and convert to atom when is MessageAsAtom" do
+    refute MessageAsAtom.load("received") == {:ok, "received"}
+    assert MessageAsAtom.load("received") == {:ok, :received}
+  end
+
+  test "should load string and not convert to atom when is MessageAsString" do
+    refute MessageAsString.load("received") == {:ok, :received}
+    assert MessageAsString.load("received") == {:ok, "received"}
   end
 
   test "should accept string for values in atom for cast and dump" do
