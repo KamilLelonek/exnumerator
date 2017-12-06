@@ -33,7 +33,7 @@ defmodule ExnumeratorTest do
   end
 
   test "should argument given types(MessageAsAtoms)" do
-    assert MessageAsAtom.cast(:sent)      == {:ok, "sent"}
+    assert MessageAsAtom.cast(:sent)      == {:ok, :sent}
     assert MessageAsAtom.dump(:delivered) == {:ok, "delivered"}
   end
 
@@ -54,7 +54,7 @@ defmodule ExnumeratorTest do
   end
 
   test "should accept string for values in atom for cast and dump" do
-    assert MessageAsAtom.cast("sent")      == {:ok, "sent"}
+    assert MessageAsAtom.cast("sent")      == {:ok, :sent}
     assert MessageAsAtom.dump("delivered") == {:ok, "delivered"}
   end
 
