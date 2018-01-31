@@ -3,17 +3,17 @@ defmodule Exnumerator do
     quote location: :keep, bind_quoted: [values: opts[:values]] do
       @behaviour Ecto.Type
 
-      def type,   do: :string
+      def type, do: :string
       def values, do: unquote(values)
-      def sample, do: unquote(values) |> Enum.random
+      def sample, do: unquote(values) |> Enum.random()
 
-      if Enum.all?(values, &(is_atom(&1))) do
+      if Enum.all?(values, &is_atom(&1)) do
         for value <- values, atom = value, string = Atom.to_string(value) do
-          def cast(unquote(atom)),   do: {:ok, unquote(atom)}
+          def cast(unquote(atom)), do: {:ok, unquote(atom)}
           def cast(unquote(string)), do: {:ok, unquote(atom)}
           def load(unquote(string)), do: {:ok, unquote(atom)}
           def dump(unquote(string)), do: {:ok, unquote(string)}
-          def dump(unquote(atom)),   do: {:ok, unquote(string)}
+          def dump(unquote(atom)), do: {:ok, unquote(string)}
         end
       else
         for value <- values do
