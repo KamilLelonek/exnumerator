@@ -52,6 +52,12 @@ defmodule MyProject.Message.StatusAsAtom do
   use Exnumerator,
     values: [:sent, :read, :received, :delivered]
 end
+
+# VALUES as KEYWORD
+defmodule MyProject.Message.StatusAsKeyword do
+  use Exnumerator,
+    values: [sent: "S", read: "R", received: "RE", delivered: "D"]
+end
 ```
 
 ### Database migration
@@ -94,6 +100,11 @@ iex(1)> MyProject.Message.StatusAsAtom.values()
 [:sent, :read, :received, :delivered]
 ```
 
+```elixir
+iex(1)> MyProject.Message.StatusAsKeyword.values()
+[sent: "S", read: "R", received: "RE", delivered: "D"]
+```
+
 When you try to insert a record with some value that is not defined, you will get the following error:
 
 ```elixir
@@ -112,6 +123,9 @@ iex(1)> MyProject.Message.StatusAsString.sample()
 
 iex(1)> MyProject.Message.StatusAsAtom.sample()
 :delivered
+
+iex(1)> MyProject.Message.StatusAsKeyword.sample()
+{:delivered, "D"}
 ```
 
 ## Testing
