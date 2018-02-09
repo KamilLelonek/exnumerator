@@ -27,29 +27,35 @@ defmodule Exnumerator do
 
       cond do
         Keyword.keyword?(values) ->
-          for {name, value} <- values, string = Atom.to_string(name) do
-            def cast(unquote(name)), do: {:ok, unquote(name)}
-            def cast(unquote(value)), do: {:ok, unquote(name)}
-            def cast(unquote(string)), do: {:ok, unquote(name)}
-            def load(unquote(value)), do: {:ok, unquote(name)}
-            def dump(unquote(name)), do: {:ok, unquote(value)}
+          for {key, value} <- values, key_string = Atom.to_string(key) do
+            def cast(unquote(key)), do: {:ok, unquote(key)}
+            def cast(unquote(value)), do: {:ok, unquote(key)}
+            def cast(unquote(key_string)), do: {:ok, unquote(key)}
+
+            def load(unquote(value)), do: {:ok, unquote(key)}
+
+            def dump(unquote(key)), do: {:ok, unquote(value)}
             def dump(unquote(value)), do: {:ok, unquote(value)}
-            def dump(unquote(string)), do: {:ok, unquote(value)}
+            def dump(unquote(key_string)), do: {:ok, unquote(value)}
           end
 
         Enum.all?(values, &is_atom(&1)) ->
-          for value <- values, atom = value, string = Atom.to_string(value) do
-            def cast(unquote(atom)), do: {:ok, unquote(atom)}
-            def cast(unquote(string)), do: {:ok, unquote(atom)}
-            def load(unquote(string)), do: {:ok, unquote(atom)}
-            def dump(unquote(string)), do: {:ok, unquote(string)}
-            def dump(unquote(atom)), do: {:ok, unquote(string)}
+          for value <- values, value_string = Atom.to_string(value) do
+            def cast(unquote(value)), do: {:ok, unquote(value)}
+            def cast(unquote(value_string)), do: {:ok, unquote(value)}
+
+            def load(unquote(value_string)), do: {:ok, unquote(value)}
+
+            def dump(unquote(value_string)), do: {:ok, unquote(value_string)}
+            def dump(unquote(value)), do: {:ok, unquote(value_string)}
           end
 
         true ->
           for value <- values do
             def cast(unquote(value)), do: {:ok, unquote(value)}
+
             def load(unquote(value)), do: {:ok, unquote(value)}
+
             def dump(unquote(value)), do: {:ok, unquote(value)}
           end
       end
