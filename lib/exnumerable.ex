@@ -4,7 +4,15 @@ defmodule Exnumerator do
       @behaviour Ecto.Type
 
       def type, do: :string
+
+      @doc """
+      Returns all possible values for the enum.
+      """
       def values, do: unquote(values)
+
+      @doc """
+      Returns a random value for the enum.
+      """
       def sample, do: unquote(values) |> Enum.random()
 
       cond do
