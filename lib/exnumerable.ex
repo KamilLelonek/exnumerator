@@ -3,8 +3,6 @@ defmodule Exnumerator do
     quote location: :keep, bind_quoted: [values: opts[:values]] do
       @behaviour Ecto.Type
 
-      def type, do: :string
-
       @doc """
       Returns all possible values for the enum.
       """
@@ -14,6 +12,18 @@ defmodule Exnumerator do
       Returns a random value for the enum.
       """
       def sample, do: unquote(values) |> Enum.random()
+
+      @impl true
+      def type, do: :string
+
+      @impl true
+      def cast(term)
+
+      @impl true
+      def dump(term)
+
+      @impl true
+      def load(term)
 
       cond do
         Keyword.keyword?(values) ->
