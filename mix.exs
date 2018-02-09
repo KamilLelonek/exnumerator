@@ -4,8 +4,8 @@ defmodule Exnumerator.Mixfile do
   def project do
     [
       app: :exnumerator,
-      version: "1.6.1",
-      elixir: "~> 1.5",
+      version: "1.7.0",
+      elixir: "~> 1.6",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       description: description(),
@@ -22,8 +22,8 @@ defmodule Exnumerator.Mixfile do
 
   defp deps do
     [
-      {:ecto, "~> 2.0", optional: true},
-      {:ex_doc, "~> 0.16", only: :dev, runtime: false}
+      {:ecto, "~> 2.2", optional: true},
+      {:ex_doc, "~> 0.18", only: :dev, runtime: false}
     ]
   end
 
