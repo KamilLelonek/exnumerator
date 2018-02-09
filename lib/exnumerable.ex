@@ -7,20 +7,33 @@ defmodule Exnumerator do
       def values, do: unquote(values)
       def sample, do: unquote(values) |> Enum.random()
 
-      if Enum.all?(values, &is_atom(&1)) do
-        for value <- values, atom = value, string = Atom.to_string(value) do
-          def cast(unquote(atom)), do: {:ok, unquote(atom)}
-          def cast(unquote(string)), do: {:ok, unquote(atom)}
-          def load(unquote(string)), do: {:ok, unquote(atom)}
-          def dump(unquote(string)), do: {:ok, unquote(string)}
-          def dump(unquote(atom)), do: {:ok, unquote(string)}
-        end
-      else
-        for value <- values do
-          def cast(unquote(value)), do: {:ok, unquote(value)}
-          def load(unquote(value)), do: {:ok, unquote(value)}
-          def dump(unquote(value)), do: {:ok, unquote(value)}
-        end
+      cond do
+        Keyword.keyword?(values) ->
+          for {name, value} <- values, string = Atom.to_string(name) do
+            def cast(unquote(name)), do: {:ok, unquote(name)}
+            def cast(unquote(value)), do: {:ok, unquote(name)}
+            def cast(unquote(string)), do: {:ok, unquote(name)}
+            def load(unquote(value)), do: {:ok, unquote(name)}
+            def dump(unquote(name)), do: {:ok, unquote(value)}
+            def dump(unquote(value)), do: {:ok, unquote(value)}
+            def dump(unquote(string)), do: {:ok, unquote(value)}
+          end
+
+        Enum.all?(values, &is_atom(&1)) ->
+          for value <- values, atom = value, string = Atom.to_string(value) do
+            def cast(unquote(atom)), do: {:ok, unquote(atom)}
+            def cast(unquote(string)), do: {:ok, unquote(atom)}
+            def load(unquote(string)), do: {:ok, unquote(atom)}
+            def dump(unquote(string)), do: {:ok, unquote(string)}
+            def dump(unquote(atom)), do: {:ok, unquote(string)}
+          end
+
+        true ->
+          for value <- values do
+            def cast(unquote(value)), do: {:ok, unquote(value)}
+            def load(unquote(value)), do: {:ok, unquote(value)}
+            def dump(unquote(value)), do: {:ok, unquote(value)}
+          end
       end
 
       def cast(_), do: :error

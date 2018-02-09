@@ -3,6 +3,7 @@ defmodule ExnumeratorTest do
 
   @values_strings ["sent", "read", "received", "delivered"]
   @values_atoms [:sent, :read, :received, :delivered]
+  @values_keywords [sent: "S", read: "READ", received: "R", delivered: "D"]
 
   defmodule MessageAsString do
     use Exnumerator, values: ["sent", "read", "received", "delivered"]
@@ -10,6 +11,10 @@ defmodule ExnumeratorTest do
 
   defmodule MessageAsAtom do
     use Exnumerator, values: [:sent, :read, :received, :delivered]
+  end
+
+  defmodule MessageAsKeywords do
+    use Exnumerator, values: [sent: "S", read: "READ", received: "R", delivered: "D"]
   end
 
   test "should store given values", do: assert(MessageAsString.values() == @values_strings)
@@ -61,5 +66,43 @@ defmodule ExnumeratorTest do
     assert MessageAsAtom.cast(:invalid) == :error
     assert MessageAsAtom.load(:invalid) == :error
     assert MessageAsAtom.dump(:invalid) == :error
+  end
+
+  describe "keywords" do
+    test "should store given values" do
+      assert MessageAsKeywords.values() == @values_keywords
+    end
+
+    test "should return a random value" do
+      assert MessageAsKeywords.sample() in @values_keywords
+    end
+
+    test "should cast atom, string, or raw value" do
+      assert MessageAsKeywords.cast(:sent) == {:ok, :sent}
+      assert MessageAsKeywords.cast("sent") == {:ok, :sent}
+      assert MessageAsKeywords.cast("S") == {:ok, :sent}
+    end
+
+    test "should not cast non-whitelisted values" do
+      assert MessageAsKeywords.cast(:invalid) == :error
+      assert MessageAsKeywords.cast("invalid") == :error
+    end
+
+    test "should dump atom, string, or raw value" do
+      assert MessageAsKeywords.dump(:sent) == {:ok, "S"}
+      assert MessageAsKeywords.dump("sent") == {:ok, "S"}
+      assert MessageAsKeywords.dump("S") == {:ok, "S"}
+    end
+
+    test "should not dump non-whitelisted values" do
+      assert MessageAsKeywords.dump(:invalid) == :error
+      assert MessageAsKeywords.dump("invalid") == :error
+    end
+
+    test "should load only the raw value" do
+      assert MessageAsKeywords.load("S") == {:ok, :sent}
+      assert MessageAsKeywords.load(:sent) == :error
+      assert MessageAsKeywords.load("sent") == :error
+    end
   end
 end
