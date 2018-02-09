@@ -16,5 +16,6 @@ notifications:
 sudo: false
 
 script:
-  - mix format
+  - mix format --check-formatted
+  - mix compile --force --warnings-as-errors
   - mix test
