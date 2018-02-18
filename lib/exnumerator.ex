@@ -1,4 +1,6 @@
 defmodule Exnumerator do
+  alias Exnumerator.{StringListEnum, AtomListEnum, KeywordListEnum}
+
   defmacro __using__(opts) do
     quote location: :keep, bind_quoted: [values: opts[:values]] do
       @behaviour Ecto.Type
@@ -11,58 +13,46 @@ defmodule Exnumerator do
       @doc """
       Returns a random value for the enum.
       """
-      def sample, do: unquote(values) |> Enum.random()
+      def sample, do: values() |> Enum.random()
 
       @impl true
       def type, do: :string
 
       @impl true
-      def cast(term)
-
-      @impl true
-      def dump(term)
-
-      @impl true
-      def load(term)
-
-      cond do
-        Keyword.keyword?(values) ->
-          for {key, value} <- values, key_string = Atom.to_string(key) do
-            def cast(unquote(key)), do: {:ok, unquote(key)}
-            def cast(unquote(value)), do: {:ok, unquote(key)}
-            def cast(unquote(key_string)), do: {:ok, unquote(key)}
-
-            def load(unquote(value)), do: {:ok, unquote(key)}
-
-            def dump(unquote(key)), do: {:ok, unquote(value)}
-            def dump(unquote(value)), do: {:ok, unquote(value)}
-            def dump(unquote(key_string)), do: {:ok, unquote(value)}
-          end
-
-        Enum.all?(values, &is_atom(&1)) ->
-          for value <- values, value_string = Atom.to_string(value) do
-            def cast(unquote(value)), do: {:ok, unquote(value)}
-            def cast(unquote(value_string)), do: {:ok, unquote(value)}
-
-            def load(unquote(value_string)), do: {:ok, unquote(value)}
-
-            def dump(unquote(value_string)), do: {:ok, unquote(value_string)}
-            def dump(unquote(value)), do: {:ok, unquote(value_string)}
-          end
-
-        true ->
-          for value <- values do
-            def cast(unquote(value)), do: {:ok, unquote(value)}
-
-            def load(unquote(value)), do: {:ok, unquote(value)}
-
-            def dump(unquote(value)), do: {:ok, unquote(value)}
-          end
+      def cast(term) do
+        values() |> Exnumerator.cast(term)
       end
 
-      def cast(_), do: :error
-      def load(_), do: :error
-      def dump(_), do: :error
+      @impl true
+      def dump(term) do
+        values() |> Exnumerator.dump(term)
+      end
+
+      @impl true
+      def load(term) do
+        values() |> Exnumerator.load(term)
+      end
+    end
+  end
+
+  def cast(values, term) do
+    run(:cast, values, term)
+  end
+
+  def load(values, term) do
+    run(:load, values, term)
+  end
+
+  def dump(values, term) do
+    run(:dump, values, term)
+  end
+
+  defp run(action, values, term) do
+    cond do
+      Keyword.keyword?(values) -> apply(KeywordListEnum, action, [values, term])
+      Enum.all?(values, &is_atom(&1)) -> apply(AtomListEnum, action, [values, term])
+      is_list(values) -> apply(StringListEnum, action, [values, term])
+      true -> nil
     end
   end
 end
