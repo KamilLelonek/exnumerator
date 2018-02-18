@@ -1,25 +1,10 @@
 defmodule Exnumerator.StringListEnum do
-  def cast(values, term) do
-    if term in values do
-      {:ok, term}
-    else
-      :error
-    end
-  end
+  def cast(values, term), do: transform(values, term)
+  def load(values, term), do: transform(values, term)
+  def dump(values, term), do: transform(values, term)
 
-  def load(values, term) do
-    if term in values do
-      {:ok, term}
-    else
-      :error
-    end
-  end
+  defp transform(values, term), do: maybe_term(term in values, term)
 
-  def dump(values, term) do
-    if term in values do
-      {:ok, term}
-    else
-      :error
-    end
-  end
+  defp maybe_term(true, term), do: {:ok, term}
+  defp maybe_term(false, _term), do: :error
 end
