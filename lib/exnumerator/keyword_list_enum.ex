@@ -9,9 +9,7 @@ defmodule Exnumerator.KeywordListEnum do
     end
   end
 
-  def load(values, term) do
-    find_value(values, term)
-  end
+  def load(values, term), do: find_value(values, term)
 
   def dump(values, term) do
     atom_term = if is_binary(term), do: String.to_atom(term), else: term

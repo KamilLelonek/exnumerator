@@ -13,39 +13,25 @@ defmodule Exnumerator do
       @doc """
       Returns a random value for the enum.
       """
-      def sample, do: values() |> Enum.random()
+      def sample, do: Enum.random(values())
 
       @impl true
       def type, do: :string
 
       @impl true
-      def cast(term) do
-        values() |> Exnumerator.cast(term)
-      end
+      def cast(term), do: Exnumerator.cast(values(), term)
 
       @impl true
-      def dump(term) do
-        values() |> Exnumerator.dump(term)
-      end
+      def dump(term), do: Exnumerator.dump(values(), term)
 
       @impl true
-      def load(term) do
-        values() |> Exnumerator.load(term)
-      end
+      def load(term), do: Exnumerator.load(values(), term)
     end
   end
 
-  def cast(values, term) do
-    run(:cast, values, term)
-  end
-
-  def load(values, term) do
-    run(:load, values, term)
-  end
-
-  def dump(values, term) do
-    run(:dump, values, term)
-  end
+  def cast(values, term), do: run(:cast, values, term)
+  def load(values, term), do: run(:load, values, term)
+  def dump(values, term), do: run(:dump, values, term)
 
   defp run(action, values, term) do
     cond do
