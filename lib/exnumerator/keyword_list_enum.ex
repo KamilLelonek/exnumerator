@@ -26,14 +26,10 @@ defmodule Exnumerator.KeywordListEnum do
   defp atom_term(term), do: term
 
   defp find_value(values, term) do
-    with {key, _value} <- key_by_value(values, term) do
-      {:ok, key}
-    else
-      _ -> :error
-    end
+    with {key, _value} <- key_by_value(values, term), do: {:ok, key}
   end
 
-  defp key_by_value(values, term), do: Enum.find(values, &matching(term, &1))
+  defp key_by_value(values, term), do: Enum.find(values, :error, &matching(term, &1))
 
   defp matching(term, {_key, term}), do: true
   defp matching(_term, _tuple), do: false
