@@ -1,40 +1,16 @@
 defmodule Exnumerator.AtomListEnum do
-  def cast(values, term) when is_binary(term) do
-    atom_term = String.to_atom(term)
-    cast(values, atom_term)
-  end
+  def cast(values, term), do: transform(values, term, atom_term(term))
+  def load(values, term), do: transform(values, term, atom_term(term))
+  def dump(values, term), do: transform(values, term, "#{term}")
 
-  def cast(values, term) do
-    if term in values do
-      {:ok, term}
-    else
-      :error
-    end
-  end
+  defp transform(values, term, result), do: maybe_term(atom_term(term) in values, result)
 
-  def load(values, term) when is_binary(term) do
-    atom_term = String.to_atom(term)
-    load(values, atom_term)
-  end
+  defp maybe_term(true, term), do: {:ok, term}
+  defp maybe_term(false, _term), do: :error
 
-  def load(values, term) do
-    if term in values do
-      {:ok, term}
-    else
-      :error
-    end
-  end
+  defp atom_term(term)
+       when is_binary(term),
+       do: String.to_atom(term)
 
-  def dump(values, term) when is_binary(term) do
-    atom_term = String.to_atom(term)
-    dump(values, atom_term)
-  end
-
-  def dump(values, term) do
-    if term in values do
-      {:ok, Atom.to_string(term)}
-    else
-      :error
-    end
-  end
+  defp atom_term(term), do: term
 end
