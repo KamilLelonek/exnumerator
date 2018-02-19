@@ -1,32 +1,40 @@
 defmodule Exnumerator.KeywordListEnum do
   def cast(values, term) do
-    atom_term = if is_binary(term), do: String.to_atom(term), else: term
-
-    if Keyword.has_key?(values, atom_term) do
+    with atom_term = atom_term(term), true <- Keyword.has_key?(values, atom_term) do
       {:ok, atom_term}
     else
-      find_value(values, term)
+      _ -> find_value(values, term)
     end
   end
 
   def load(values, term), do: find_value(values, term)
 
   def dump(values, term) do
-    atom_term = if is_binary(term), do: String.to_atom(term), else: term
-
-    if value = Keyword.get(values, atom_term) do
-      {:ok, value}
+    with nil <- Keyword.get(values, atom_term(term)),
+         {:ok, key} <- find_value(values, term) do
+      {:ok, Keyword.get(values, key)}
     else
-      with {:ok, key} <- find_value(values, term), do: {:ok, Keyword.get(values, key)}
+      :error -> :error
+      value -> {:ok, value}
     end
   end
+
+  defp atom_term(term)
+       when is_binary(term),
+       do: String.to_atom(term)
+
+  defp atom_term(term), do: term
 
   defp find_value(values, term) do
-    found_element = Enum.find(values, fn {_key, value} -> value == term end)
-
-    case found_element do
-      nil -> :error
-      {key, _value} -> {:ok, key}
+    with {key, _value} <- key_by_value(values, term) do
+      {:ok, key}
+    else
+      _ -> :error
     end
   end
+
+  defp key_by_value(values, term), do: Enum.find(values, &matching(term, &1))
+
+  defp matching(term, {_key, term}), do: true
+  defp matching(_term, _tuple), do: false
 end
