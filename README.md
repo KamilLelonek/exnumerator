@@ -8,8 +8,8 @@ Either in Java or in C# there is `enum` type available. It is a special data typ
 
 See more:
 
-- <https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html>
-- <https://msdn.microsoft.com/en-us/library/vstudio/cc138362>
+* <https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html>
+* <https://msdn.microsoft.com/en-us/library/vstudio/cc138362>
 
 ## Rationale
 
@@ -74,11 +74,11 @@ defmodule MyProject.Repo.Migrations.CreateMessage do
 end
 ```
 
-### Database model
+### Database schema
 
 ```elixir
 defmodule MyProject.Message do
-  use MyProject.Web, :model
+  use MyProject.Web, :schema
 
   schema "messages" do
     field :status, MyProject.Message.StatusAsString
@@ -126,6 +126,19 @@ iex(1)> MyProject.Message.StatusAsAtom.sample()
 
 iex(1)> MyProject.Message.StatusAsKeyword.sample()
 {:delivered, "D"}
+```
+
+**You can pick the first value from the predefined set too:**
+
+```elixir
+iex(1)> MyProject.Message.StatusAsString.first()
+"sent"
+
+iex(1)> MyProject.Message.StatusAsAtom.first()
+:sent
+
+iex(1)> MyProject.Message.StatusAsKeyword.first()
+{:sent, "S"}
 ```
 
 ## Testing
