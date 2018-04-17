@@ -15,6 +15,11 @@ defmodule Exnumerator do
       """
       def sample, do: Enum.random(values())
 
+      @doc """
+      Returns the first value for the enum.
+      """
+      def first, do: List.first(values())
+
       @impl true
       def type, do: :string
 

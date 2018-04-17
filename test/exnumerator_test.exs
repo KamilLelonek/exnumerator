@@ -17,20 +17,46 @@ defmodule ExnumeratorTest do
     use Exnumerator, values: [sent: "S", read: "READ", received: "R", delivered: "D"]
   end
 
-  test "should store given values" do
-    assert(MessageAsString.values() == @values_strings)
+  describe "MessageAsString" do
+    test "should store given values" do
+      assert MessageAsString.values() == @values_strings
+    end
+
+    test "should return a random value" do
+      assert MessageAsString.sample() in @values_strings
+    end
+
+    test "should return the first value" do
+      assert MessageAsString.first() == List.first(@values_strings)
+    end
   end
 
-  test "should return a random value" do
-    assert(MessageAsString.sample() in @values_strings)
+  describe "MessageAsAtom" do
+    test "should store given values" do
+      assert MessageAsAtom.values() == @values_atoms
+    end
+
+    test "should return a random value" do
+      assert MessageAsAtom.sample() in @values_atoms
+    end
+
+    test "should return the first value" do
+      assert MessageAsAtom.first() == List.first(@values_atoms)
+    end
   end
 
-  test "should store given values(MessageAsAtoms)" do
-    assert(MessageAsAtom.values() == @values_atoms)
-  end
+  describe "MessageAsKeywords" do
+    test "should store given values" do
+      assert MessageAsKeywords.values() == @values_keywords
+    end
 
-  test "should return a random value(MessageAsAtoms)" do
-    assert(MessageAsAtom.sample() in @values_atoms)
+    test "should return a random value" do
+      assert MessageAsKeywords.sample() in @values_keywords
+    end
+
+    test "should return the first value" do
+      assert MessageAsKeywords.first() == List.first(@values_keywords)
+    end
   end
 
   describe "values as  list of strings (MessageAsString)" do
