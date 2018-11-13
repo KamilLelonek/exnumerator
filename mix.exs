@@ -22,7 +22,7 @@ defmodule Exnumerator.Mixfile do
 
   defp deps do
     [
-      {:ecto, "~> 2.2", optional: true},
+      {:ecto, "~> 2.2 or ~> 3.0", optional: true},
       {:ex_doc, "~> 0.18", only: :dev, runtime: false}
     ]
   end
