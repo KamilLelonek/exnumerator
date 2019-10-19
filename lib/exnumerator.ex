@@ -31,6 +31,14 @@ defmodule Exnumerator do
 
       @impl true
       def load(term), do: Exnumerator.load(values(), term)
+
+      @impl true
+      def embed_as(_format), do: :self
+
+      @impl true
+      def equal?(term, term), do: true
+      @impl true
+      def equal?(_term1, _term2), do: false
     end
   end
 
